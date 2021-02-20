@@ -60,6 +60,28 @@ export const setAuthToken = (token: string): AppThunk => async (dispatch) => {
   dispatch(setRedirect({path: "/profile", message: "¡Welcome!", success: true}));
 };
 
+export const requestAuthToken = (code: string): AppThunk => async (dispatch) => {
+
+  try{
+
+    const requestUrl = "http://localhost:8000/gh-oauth";
+
+    const response = await axios({
+      method: 'post',
+      url: requestUrl,
+      data: {
+        code: code
+      }
+    });
+
+    if(response.data) dispatch(setAuthToken(response.data));
+  }
+  catch(err){
+
+    console.log(err);
+  }
+};
+
 export const loadUserData = (): AppThunk => async (dispatch) => {
 
   try{
